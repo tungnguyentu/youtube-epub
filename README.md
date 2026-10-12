@@ -63,18 +63,85 @@ command -v yt-dlp ffmpeg
 python3 -c "import ebooklib, PIL; print('ok')"
 ```
 
-## Install as a Grok skill
+## Install as an agent skill
+
+The repo root is a standard `SKILL.md` skill. Install it once, then point each agent at the same folder (clone or symlink). Restart **Codex** after install — it only loads `~/.codex/skills` at session start. Grok and Claude Code pick up new skill folders without a full reinstall; open a new chat if the skill is missing from the list.
+
+### Quick install (Claude Code + Codex + others)
+
+[`skills`](https://skills.sh) copies the skill into `~/.agents/skills` and links the agents you name:
 
 ```bash
-git clone https://github.com/tungnguyentu/youtube-epub.git ~/.grok/skills/youtube-epub
+npx --yes skills add tungnguyentu/youtube-epub \
+  --skill youtube-epub \
+  -g -y \
+  --agent claude-code Codex
 ```
 
-Reload skills (Grok picks up new folders within a few seconds). Then:
+Add `Grok` (display name **Grok Build**) if you also want the Grok CLI linked that way. `-a '*'` links every agent the CLI knows.
 
-- Slash command: `/youtube-epub`
-- Or paste a YouTube URL and ask for an EPUB with images
+Check:
 
-For Claude Code / other agents that read `SKILL.md`, clone or symlink into that runtime’s skills directory as well.
+```bash
+npx --yes skills ls -g -s youtube-epub
+ls -ld ~/.claude/skills/youtube-epub ~/.codex/skills/youtube-epub ~/.agents/skills/youtube-epub
+```
+
+### Manual install
+
+Clone once, then symlink into each runtime:
+
+```bash
+git clone https://github.com/tungnguyentu/youtube-epub.git ~/src/youtube-epub
+
+mkdir -p ~/.claude/skills ~/.codex/skills ~/.grok/skills ~/.agents/skills
+ln -sfn ~/src/youtube-epub ~/.claude/skills/youtube-epub
+ln -sfn ~/src/youtube-epub ~/.codex/skills/youtube-epub
+ln -sfn ~/src/youtube-epub ~/.grok/skills/youtube-epub
+ln -sfn ~/src/youtube-epub ~/.agents/skills/youtube-epub
+```
+
+| Runtime | User skill directory | Project skill directory |
+|---------|----------------------|-------------------------|
+| [Claude Code](https://code.claude.com/docs/en/skills) | `~/.claude/skills/youtube-epub/` | `<repo>/.claude/skills/youtube-epub/` |
+| [Codex CLI](https://github.com/openai/codex) | `~/.codex/skills/youtube-epub/` | `<repo>/.codex/skills/youtube-epub/` |
+| Grok | `~/.grok/skills/youtube-epub/` | — |
+| Shared (skills CLI) | `~/.agents/skills/youtube-epub/` | `<repo>/.agents/skills/youtube-epub/` |
+
+Each directory must contain `SKILL.md` at its root (the clone already does). Do not nest an extra `youtube-epub/` inside the skill folder.
+
+Project-only (this repo, not global):
+
+```bash
+cd /path/to/your-project
+mkdir -p .claude/skills .codex/skills
+ln -sfn /path/to/youtube-epub .claude/skills/youtube-epub
+ln -sfn /path/to/youtube-epub .codex/skills/youtube-epub
+```
+
+### Invoke
+
+After the skill is on disk:
+
+**Claude Code** — new session. Paste a YouTube URL and ask for an EPUB with images, or type `/youtube-epub`. Claude matches the skill `description` and should run `scripts/youtube_epub.py` instead of reinventing the pipeline. Confirm it is listed with `/skills` (or the skills panel).
+
+**Codex** — **quit and start a new Codex session** so `~/.codex/skills` is rescanned. Then:
+
+```text
+Turn this into an illustrated EPUB: https://youtu.be/VIDEO_ID
+```
+
+Codex does not need a slash command. If the skill does not fire, say `use the youtube-epub skill` and give the URL.
+
+**Grok** — `/youtube-epub` or the same natural-language request. Skills auto-reload when files change.
+
+All three should shell out to:
+
+```bash
+python3 /path/to/youtube-epub/scripts/youtube_epub.py "URL" --out ~/Work/artifacts
+```
+
+Add `--vi` / `--kindle` when you asked for Vietnamese or Kindle. Install CLI dependencies from [Requirements](#requirements) on the machine that runs the agent.
 
 ## CLI usage
 
@@ -164,7 +231,7 @@ Calibre, Apple Books, and most e-readers open EPUB as well.
 
 ## Using it through an agent
 
-Ask in plain language. The skill file (`SKILL.md`) tells the agent to run the CLI rather than reimplement the pipeline.
+Ask in plain language. `SKILL.md` tells the agent to run the CLI rather than reimplement the pipeline.
 
 Examples:
 
@@ -173,6 +240,12 @@ Examples:
 - “Copy both books to the Kindle that’s plugged in”
 
 The agent should not ask extra questions when you only want the default English EPUB.
+
+| Client | How to trigger |
+|--------|----------------|
+| Claude Code | `/youtube-epub` or a YouTube URL + “EPUB with images”. New chat if the skill is not in `/skills`. |
+| Codex CLI | New session after install, then the same request in English or Vietnamese. |
+| Grok | `/youtube-epub` or the same request. |
 
 ## Vietnamese translation
 
@@ -234,6 +307,7 @@ After a build, confirm:
 | `Kindle not mounted` | Unlock the Kindle, set USB to file transfer, wait for `/run/media/$USER/Kindle`. |
 | `ebook-convert not found` | Install Calibre so `ebook-convert` is on `PATH`. |
 | Foliate crash on open | Open from the app menu and pick the file; a second instance while another book is closing can glitch. |
+| Codex never uses the skill | Confirm `~/.codex/skills/youtube-epub/SKILL.md` exists, then **start a new Codex session**. |
 
 ## License
 

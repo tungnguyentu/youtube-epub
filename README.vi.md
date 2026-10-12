@@ -63,18 +63,83 @@ command -v yt-dlp ffmpeg
 python3 -c "import ebooklib, PIL; print('ok')"
 ```
 
-## Cài thành skill Grok
+## Cài thành skill agent (Claude, Codex, Grok)
+
+Repo có `SKILL.md` ở thư mục gốc. Cài một lần, rồi trỏ từng agent vào cùng folder (clone hoặc symlink). **Codex phải mở session mới** — nó chỉ đọc `~/.codex/skills` lúc khởi động. Grok và Claude Code nạp folder skill mới nhanh hơn; nếu chưa thấy skill thì mở chat mới.
+
+### Cài nhanh (Claude Code + Codex)
+
+[`skills`](https://skills.sh) copy skill vào `~/.agents/skills` và link các agent bạn chỉ định:
 
 ```bash
-git clone https://github.com/tungnguyentu/youtube-epub.git ~/.grok/skills/youtube-epub
+npx --yes skills add tungnguyentu/youtube-epub \
+  --skill youtube-epub \
+  -g -y \
+  --agent claude-code Codex
 ```
 
-Skill tự nạp sau vài giây. Cách gọi:
+Thêm `Grok` (tên hiển thị **Grok Build**) nếu muốn link Grok CLI. `-a '*'` link mọi agent mà CLI biết.
 
-- Lệnh slash: `/youtube-epub`
-- Hoặc dán URL YouTube và bảo agent làm EPUB có hình
+Kiểm tra:
 
-Muốn dùng với Claude Code / agent khác đọc `SKILL.md`: clone hoặc symlink vào thư mục skills của runtime đó.
+```bash
+npx --yes skills ls -g -s youtube-epub
+ls -ld ~/.claude/skills/youtube-epub ~/.codex/skills/youtube-epub ~/.agents/skills/youtube-epub
+```
+
+### Cài tay
+
+Clone một chỗ, symlink vào từng runtime:
+
+```bash
+git clone https://github.com/tungnguyentu/youtube-epub.git ~/src/youtube-epub
+
+mkdir -p ~/.claude/skills ~/.codex/skills ~/.grok/skills ~/.agents/skills
+ln -sfn ~/src/youtube-epub ~/.claude/skills/youtube-epub
+ln -sfn ~/src/youtube-epub ~/.codex/skills/youtube-epub
+ln -sfn ~/src/youtube-epub ~/.grok/skills/youtube-epub
+ln -sfn ~/src/youtube-epub ~/.agents/skills/youtube-epub
+```
+
+| Runtime | Skill user | Skill theo project |
+|---------|------------|-------------------|
+| [Claude Code](https://code.claude.com/docs/en/skills) | `~/.claude/skills/youtube-epub/` | `<repo>/.claude/skills/youtube-epub/` |
+| [Codex CLI](https://github.com/openai/codex) | `~/.codex/skills/youtube-epub/` | `<repo>/.codex/skills/youtube-epub/` |
+| Grok | `~/.grok/skills/youtube-epub/` | — |
+| Dùng chung (skills CLI) | `~/.agents/skills/youtube-epub/` | `<repo>/.agents/skills/youtube-epub/` |
+
+Mỗi thư mục phải có `SKILL.md` ngay gốc (clone đã đúng). Đừng lồng thêm một tầng `youtube-epub/` bên trong.
+
+Chỉ gắn vào một project:
+
+```bash
+cd /path/to/your-project
+mkdir -p .claude/skills .codex/skills
+ln -sfn /path/to/youtube-epub .claude/skills/youtube-epub
+ln -sfn /path/to/youtube-epub .codex/skills/youtube-epub
+```
+
+### Gọi skill
+
+**Claude Code** — session mới. Dán URL YouTube và xin EPUB có hình, hoặc gõ `/youtube-epub`. Claude khớp field `description` rồi chạy `scripts/youtube_epub.py`, không tự viết lại pipeline. Xem skill đã có chưa bằng `/skills`.
+
+**Codex** — **tắt hẳn rồi mở Codex session mới** để quét `~/.codex/skills`. Sau đó:
+
+```text
+Chuyển video này thành EPUB có hình: https://youtu.be/VIDEO_ID
+```
+
+Codex không cần slash command. Nếu không tự bật skill, nói `dùng skill youtube-epub` và gửi URL.
+
+**Grok** — `/youtube-epub` hoặc cùng một câu tiếng thường. Skill tự reload khi file đổi.
+
+Cả ba nên gọi:
+
+```bash
+python3 /path/to/youtube-epub/scripts/youtube_epub.py "URL" --out ~/Work/artifacts
+```
+
+Thêm `--vi` / `--kindle` khi bạn xin bản Việt hoặc đưa Kindle. Máy chạy agent vẫn cần đủ [Yêu cầu](#yêu-cầu).
 
 ## Dùng CLI
 
@@ -174,6 +239,12 @@ Ví dụ:
 
 Khi bạn chỉ cần EPUB tiếng Anh mặc định, agent không cần hỏi thêm.
 
+| Client | Cách bật |
+|--------|----------|
+| Claude Code | `/youtube-epub` hoặc URL YouTube + “EPUB có hình”. Chat mới nếu `/skills` chưa có. |
+| Codex CLI | Session mới sau khi cài, rồi cùng một yêu cầu. |
+| Grok | `/youtube-epub` hoặc cùng yêu cầu. |
+
 ## Dịch tiếng Việt
 
 `--vi` gọi CLI `agy` (`gemini-3.8-flash-low`) với JSON schema để số câu khớp.
@@ -234,6 +305,7 @@ Sau khi build, xem:
 | `Kindle not mounted` | Mở khóa Kindle, USB file transfer, đợi `/run/media/$USER/Kindle`. |
 | `ebook-convert not found` | Cài Calibre để có `ebook-convert` trên `PATH`. |
 | Foliate crash khi mở | Mở từ menu ứng dụng rồi chọn file; hai cửa sổ chồng lúc đóng sách cũ dễ lỗi. |
+| Codex không dùng skill | Kiểm tra `~/.codex/skills/youtube-epub/SKILL.md`, rồi **mở Codex session mới**. |
 
 ## Giấy phép
 
