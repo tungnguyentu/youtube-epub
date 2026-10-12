@@ -1,0 +1,2 @@
+ebooklib>=3.0.0
+Pillow>=10.0.0

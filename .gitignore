@@ -1,0 +1,12 @@
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+*.epub
+*.azw3
+thumbs/
+slides/
+frames/
+vi_cache.json
+*.jpg
+!scripts/**
