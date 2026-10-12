@@ -14,6 +14,27 @@ Each chapter follows YouTube chapter timestamps. Sentences are not split across 
 
 Best source material: slide-based courses and talks with auto-captions or manual subtitles. Talking-head-only videos still get a transcript, but few useful stills.
 
+## Example output
+
+English EPUB from [AI Engineer Full Course in 3 Hours](https://www.youtube.com/watch?v=XFNggsFFZJw) (~3 h, 46 chapters, 832 slides):
+
+<p align="center">
+  <img src="docs/images/cover.jpg" alt="YouTube thumbnail used as EPUB cover" width="72%" />
+</p>
+<p align="center"><em>Cover taken from the video thumbnail.</em></p>
+
+<p align="center">
+  <img src="docs/images/foliate-en.jpg" alt="English EPUB open in Foliate, showing the chapter list and transcript" width="88%" />
+</p>
+<p align="center"><em>The book in Foliate: English table of contents and transcript next to slides.</em></p>
+
+<p align="center">
+  <img src="docs/images/slide-agent.jpg" alt="Slide: A clear picture of an agent" width="32%" />
+  <img src="docs/images/slide-context-window.jpg" alt="Slide: It depends on the context window" width="32%" />
+  <img src="docs/images/slide-lost-in-the-middle.jpg" alt="Slide: 40 CVs on your desk" width="32%" />
+</p>
+<p align="center"><em>Unique slides pulled from the video (not a single frame per chapter).</em></p>
+
 ## How it works
 
 1. **Download** with `yt-dlp`: metadata, thumbnail, captions (json3), 720p video for frames.

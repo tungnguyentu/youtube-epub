@@ -14,6 +14,27 @@ Chương theo timestamp YouTube. Mỗi câu nằm trọn trong một chương. S
 
 Hợp nhất với khóa học/bài giảng có slide và phụ đề (tự động hoặc thủ công). Video chỉ talking-head vẫn ra transcript, nhưng ít ảnh hữu ích.
 
+## Ảnh mẫu (bản tiếng Anh)
+
+EPUB tiếng Anh từ [AI Engineer Full Course in 3 Hours](https://www.youtube.com/watch?v=XFNggsFFZJw) (~3 giờ, 46 chương, 832 slide):
+
+<p align="center">
+  <img src="docs/images/cover.jpg" alt="Ảnh bìa EPUB lấy từ thumbnail YouTube" width="72%" />
+</p>
+<p align="center"><em>Bìa lấy từ thumbnail video.</em></p>
+
+<p align="center">
+  <img src="docs/images/foliate-en.jpg" alt="EPUB tiếng Anh mở trong Foliate, hiện mục lục và transcript" width="88%" />
+</p>
+<p align="center"><em>Sách trong Foliate: mục lục tiếng Anh và transcript cạnh slide.</em></p>
+
+<p align="center">
+  <img src="docs/images/slide-agent.jpg" alt="Slide: A clear picture of an agent" width="32%" />
+  <img src="docs/images/slide-context-window.jpg" alt="Slide: It depends on the context window" width="32%" />
+  <img src="docs/images/slide-lost-in-the-middle.jpg" alt="Slide: 40 CVs on your desk" width="32%" />
+</p>
+<p align="center"><em>Slide độc nhất cắt từ video (không phải một khung đại diện mỗi chương).</em></p>
+
 ## Pipeline
 
 1. **Tải** bằng `yt-dlp`: metadata, thumbnail, phụ đề json3, video 720p để cắt khung.

@@ -8,5 +8,3 @@ thumbs/
 slides/
 frames/
 vi_cache.json
-*.jpg
-!scripts/**
