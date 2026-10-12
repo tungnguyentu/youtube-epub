@@ -24,9 +24,9 @@ EPUB tiếng Anh từ [AI Engineer Full Course in 3 Hours](https://www.youtube.c
 <p align="center"><em>Bìa lấy từ thumbnail video.</em></p>
 
 <p align="center">
-  <img src="docs/images/foliate-en.jpg" alt="EPUB tiếng Anh mở trong Foliate, hiện mục lục và transcript" width="88%" />
+  <img src="docs/images/chapter-en.jpg" alt="Chương EPUB tiếng Anh: mục lục, transcript và một slide bài giảng" width="88%" />
 </p>
-<p align="center"><em>Sách trong Foliate: mục lục tiếng Anh và transcript cạnh slide.</em></p>
+<p align="center"><em>Một chương EPUB tiếng Anh: mục lục, transcript và slide cắt từ video.</em></p>
 
 <p align="center">
   <img src="docs/images/slide-agent.jpg" alt="Slide: A clear picture of an agent" width="32%" />

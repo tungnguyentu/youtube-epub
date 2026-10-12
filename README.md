@@ -24,9 +24,9 @@ English EPUB from [AI Engineer Full Course in 3 Hours](https://www.youtube.com/w
 <p align="center"><em>Cover taken from the video thumbnail.</em></p>
 
 <p align="center">
-  <img src="docs/images/foliate-en.jpg" alt="English EPUB open in Foliate, showing the chapter list and transcript" width="88%" />
+  <img src="docs/images/chapter-en.jpg" alt="English EPUB chapter with table of contents, transcript, and a lecture slide" width="88%" />
 </p>
-<p align="center"><em>The book in Foliate: English table of contents and transcript next to slides.</em></p>
+<p align="center"><em>A chapter from the English EPUB: table of contents, transcript, and a unique lecture slide.</em></p>
 
 <p align="center">
   <img src="docs/images/slide-agent.jpg" alt="Slide: A clear picture of an agent" width="32%" />
